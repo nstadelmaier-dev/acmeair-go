@@ -1,0 +1,6 @@
+
+package loader
+
+var MAX_CUSTOMERS = 10000
+var MAX_DAYS_TO_SCHEDULE_FLIGHTS = 30
+var MAX_FLIGHTS_PER_DAY = 1
