@@ -7,6 +7,7 @@ RUN go get github.com/globalsign/mgo
 RUN go get github.com/streamrail/concurrent-map
 RUN go get github.com/DeanThompson/ginpprof
 RUN go get github.com/satori/go.uuid
+RUN go get github.com/zsais/go-gin-prometheus
 
 WORKDIR /app
 ADD ./ /app 

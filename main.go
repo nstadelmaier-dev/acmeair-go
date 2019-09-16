@@ -1,17 +1,18 @@
 package main
 
 import (
-	"routes"
 	"dataaccess/connect"
 	"loader"
+	"routes"
 
+	"encoding/json"
 	"fmt"
 	"os"
-	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/DeanThompson/ginpprof"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
 func main() {
@@ -22,9 +23,9 @@ func main() {
 	}
 
 	file, err := os.Open(settings_file)
-        if err != nil {
-                panic(err.Error())
-        }
+	if err != nil {
+		panic(err.Error())
+	}
 	defer file.Close()
 
 	decoder := json.NewDecoder(file)
@@ -58,11 +59,13 @@ func main() {
 	//router := gin.Default()
 	router := gin.New()
 	ginpprof.Wrapper(router)
-
+	p := ginprometheus.NewPrometheus("gin")
+	p.Use(router)
+	
 	db := connect.Connect("mongo", settings)
 
 	api := router.Group(contextRoot)
-	api.Use(func (c *gin.Context) {
+	api.Use(func(c *gin.Context) {
 		s := db.New()
 		defer s.Close()
 
